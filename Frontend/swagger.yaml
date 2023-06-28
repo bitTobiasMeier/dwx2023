@@ -1,0 +1,210 @@
+x-generator: NSwag v13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v10.0.0.0))
+openapi: 3.0.0
+info:
+  title: 'DWX: Effektive Entwicklung mit TypeScript'
+  version: 1.0.0
+servers:
+- url: http://localhost:5100
+paths:
+  /api/Reservation:
+    post:
+      tags:
+      - Reservation
+      operationId: Reservation_CreateReservation
+      requestBody:
+        x-name: reservation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationLegacy'
+        required: true
+        x-position: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationLegacy'
+    put:
+      tags:
+      - Reservation
+      operationId: Reservation_UpdateReservation
+      requestBody:
+        x-name: reservation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationLegacy'
+        required: true
+        x-position: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationLegacy'
+    delete:
+      tags:
+      - Reservation
+      operationId: Reservation_DeleteReservation
+      parameters:
+      - name: reservationId
+        in: query
+        schema:
+          type: integer
+          format: int32
+        x-position: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationLegacy'
+    get:
+      tags:
+      - Reservation
+      operationId: Reservation_GetAll
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReservationLegacy'
+  /api/Reservation/{reservationId}:
+    get:
+      tags:
+      - Reservation
+      operationId: Reservation_Get
+      parameters:
+      - name: reservationId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+        x-position: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationLegacy'
+  /api/Restaurant:
+    get:
+      tags:
+      - Restaurant
+      operationId: Restaurant_Get
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RestaurantLegacy'
+components:
+  schemas:
+    ReservationLegacy:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+          nullable: true
+        restaurantId:
+          type: integer
+          format: int32
+        date:
+          type: string
+          format: date-time
+        contact:
+          $ref: '#/components/schemas/ReservationContactLegacy'
+        personcount:
+          type: integer
+          format: int32
+    ReservationContactLegacy:
+      type: object
+      discriminator:
+        propertyName: kind
+        mapping:
+          ReservationCompanyContact: '#/components/schemas/ReservationCompanyContactLegacy'
+          ReservationPrivateContact: '#/components/schemas/ReservationPrivateContactLegacy'
+      x-abstract: true
+      additionalProperties: false
+      required:
+      - kind
+      properties:
+        kind:
+          type: string
+    ReservationCompanyContactLegacy:
+      allOf:
+      - $ref: '#/components/schemas/ReservationContactLegacy'
+      - type: object
+        additionalProperties: false
+        properties:
+          companyReservation:
+            nullable: true
+            oneOf:
+            - $ref: '#/components/schemas/CompanyLegacy'
+    CompanyLegacy:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        contact:
+          $ref: '#/components/schemas/PersonLegacy'
+    PersonLegacy:
+      type: object
+      additionalProperties: false
+      properties:
+        vorname:
+          type: string
+        nachname:
+          type: string
+        phoneNumber:
+          type: string
+    ReservationPrivateContactLegacy:
+      allOf:
+      - $ref: '#/components/schemas/ReservationContactLegacy'
+      - type: object
+        additionalProperties: false
+        properties:
+          privateReservation:
+            nullable: true
+            oneOf:
+            - $ref: '#/components/schemas/PersonLegacy'
+    RestaurantLegacy:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/AddressLegacy'
+    AddressLegacy:
+      type: object
+      additionalProperties: false
+      properties:
+        street:
+          type: string
+        housenumber:
+          type: string
+        city:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string

@@ -1,0 +1,32 @@
+<header class="headerpicture">
+  <div class="card" id="header">
+
+    <a href="http://www.bridging-it.de/" class="card-img-top" >
+        <img src="assets/bitlogo.png"/>
+    </a><br/>
+    <h1>Effektive Entwicklung mit TypeScript</h1>
+</div>
+</header>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Refactored Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/reservations">Übersicht</a>
+      <a mat-list-item routerLink="/reservation/new" >Neue Reservierung</a>
+    </mat-nav-list>
+
+    <mat-toolbar>Legacy Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/legacy/reservations">Übersicht</a>
+      <a mat-list-item routerLink="/legacy/reservation/new" >Neue Reservierung</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

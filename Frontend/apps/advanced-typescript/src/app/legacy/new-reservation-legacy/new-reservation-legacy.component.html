@@ -1,0 +1,99 @@
+<form [formGroup]="reservationForm" novalidate >
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Neue Reservierung (Legacy)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+          <mat-form-field  class="form-field">
+            <mat-label>Datum der Reservierung}}</mat-label>
+            <input matInput placeholder="Datum der Reservierung" [matDatepicker]="picker" [min]="minDate" [max]="maxDate" formControlName="date">
+            <mat-hint> (DD.MM.YYYY)</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="reservationForm.controls['date'].hasError('required')">
+              &nbsp;<strong>Bitte geben Sie das Datum der Reservierung an.</strong>
+            </mat-error>
+          </mat-form-field>
+
+
+          <mat-form-field  class="form-field" hintLabel="(Zahl >= 1 und <= 100)"  class="form-field">
+            <mat-label>Anzahl Personen</mat-label>
+            <input matInput placeholder="Anzahl Personen" formControlName="personcount" type="number">
+            <mat-error *ngIf="reservationForm.controls['personcount'].hasError('required')">
+              &nbsp;<strong>Bitte geben Sie die Anzahl Personen an, für die ein Tisch reserviert werden soll.</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      <div class="row">
+
+
+        <div class="col">
+            <mat-radio-group formControlName="contactType" matInput>
+              <mat-radio-button value="PrivateReservation">Reservierung durch eine private Person</mat-radio-button>
+              <mat-radio-button value="CompanyReservation">Reservierung durch eine Firma</mat-radio-button>
+            </mat-radio-group>
+
+
+
+
+
+        </div>
+
+      </div>
+      <div class="row">
+        <div *ngIf="isPersonContact()" formGroupName="contact">
+          <mat-form-field class="form-field">
+            <mat-label>Vorname</mat-label>
+            <input matInput placeholder="Vorname" formControlName="firstName">
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Nachname</mat-label>
+            <input matInput placeholder="Nachname" formControlName="lastName">
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Telefonnummer</mat-label>
+            <input matInput placeholder="Telefonnummer" formControlName="phoneNumber">
+          </mat-form-field>
+        </div>
+
+        <div *ngIf="!isPersonContact()" formGroupName="companyContact">
+          <mat-form-field class="form-field form-field-large" >
+            <mat-label>Firmenname</mat-label>
+            <input matInput placeholder="Firmenname" formControlName="companyName">
+          </mat-form-field>
+
+          <div formGroupName="contactPerson">
+            <mat-form-field  class="form-field">
+              <mat-label>Vorname</mat-label>
+              <input matInput placeholder="Vorname" formControlName="firstName">
+            </mat-form-field>
+
+            <mat-form-field class="form-field">
+              <mat-label>Nachname</mat-label>
+              <input matInput placeholder="Nachname" formControlName="lastName">
+            </mat-form-field>
+
+            <mat-form-field class="form-field">
+              <mat-label>Telefonnummer</mat-label>
+              <input matInput placeholder="Telefonnummer" formControlName="phoneNumber">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="!reservationForm.valid || isSaving === true">Reservieren</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+
+<div *ngIf="this.newReservation$">
+  {{this.newReservation$  | async | json}}
+</div>
+
+
+

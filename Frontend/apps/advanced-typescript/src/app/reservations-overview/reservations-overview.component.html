@@ -1,0 +1,34 @@
+<h2>Aktuelle Reservierungen:</h2>
+
+
+<table mat-table [dataSource]="reservations$" class="mat-elevation-z8" matSort #restable="matTable">
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nr</th>
+    <td mat-cell *matCellDef="let res;table: restable">{{ res.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Datum</th>
+    <td mat-cell *matCellDef="let res;table: restable">{{ res.date | date: 'dd.MM.yyyy HH:mm' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="personcount">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Personen</th>
+    <td mat-cell *matCellDef="let res;table: restable">{{ res.personcount }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="contact">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Kontakt</th>
+    <td mat-cell *matCellDef="let res;table: restable">{{ isContactPerson(res.contact)  ? res.contact.vorname +' ' + res.contact.nachname : res.contact.name }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+     mat-row
+     *matRowDef="let row; columns: displayedColumns; let even = even"
+     [ngClass]="{ 'row-background-gray': !even }"
+  ></tr>
+</table>
+
+
